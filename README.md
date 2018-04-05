@@ -74,7 +74,7 @@ const notAllowed = require('not-allowed')
 sinon.stub(o, 'say')
   .callsFake(notAllowed)
   .withArgs('foo').returns(42)
-o.say('bar')
+o.say('bar', 'bar', 42)
 // throws Error('Not allowed to call this function with arguments
 //    foo bar 42
 // ')
