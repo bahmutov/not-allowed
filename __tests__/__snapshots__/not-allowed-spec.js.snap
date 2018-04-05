@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`not-allowed throws error 1`] = `
+"Not allowed to call this function with arguments
+    
+  "
+`;
+
+exports[`not-allowed throws error with arguments 1`] = `
+"Not allowed to call this function with arguments
+    foo bar 42
+  "
+`;

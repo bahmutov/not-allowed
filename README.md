@@ -14,10 +14,71 @@
 Requires [Node](https://nodejs.org/en/) version 6 or above.
 
 ```sh
-npm install --save not-allowed
+npm install --save-dev not-allowed
 ```
 
 ## Use
+
+Imagine for example you are testing a stubbed method using [sinon](http://sinonjs.org/) and expect the method to be called with string 'foo'.
+
+```js
+const sinon = require('sinon')
+const o = {
+  // method to be stubbed
+  say: () => 'hello'
+}
+// normally, o.say() returns "hello"
+console.log('o.say()', o.say())
+// "hello"
+// but we want to make sure that when called with "foo"
+// it returns different value
+sinon.stub(o, 'say')
+  .withArgs('foo').returns(42)
+o.say('foo')
+// 42
+```
+
+But what happens when we call the mocked method without any arguments `o.say()`? Or with unexpected argument `o.say('bar')`? Sinon will just return `undefined`, which can cause very tricky errors!
+
+We really want to throw an error in this case because somehow our code is doing an unexpected call. Sinon already provides such feature: [`stub.throws()`](http://sinonjs.org/releases/v4.5.0/stubs/) and even `stub.throws(function() { return new Error(); })` where we can form a detailed message. So we can stub just `o.say('foo')` and throw an error for any other call.
+
+```js
+sinon.stub(o, 'say')
+  .throws('nope')
+  .withArgs('foo').returns(42)
+o.say('foo')
+// 42
+o.say('bar')
+// throws Error('nope')
+```
+
+**But**
+
+The thrown error does NOT tell us _the arguments_ to the incorrect call! So we would not have any idea that the unexpected call was `o.say('bar')`! Luckily there is a method `.callsFake(fn)` in Sinon to call your function instead of throwing "dumb" error. We can use this method to get call's details and throw a very good error
+
+```js
+function onlyFoo(a) {
+  throw new Error(`Cannot call this stub with argument ${a}`)
+}
+sinon.stub(o, 'say')
+  .callsFake(onlyFoo)
+  .withArgs('foo').returns(42)
+o.say('bar')
+// throws Error('Cannot call this stub with argument bar')
+```
+
+This NPM package just makes it convenient - it serializes arguments intelligently and throws an error.
+
+```js
+const notAllowed = require('not-allowed')
+sinon.stub(o, 'say')
+  .callsFake(notAllowed)
+  .withArgs('foo').returns(42)
+o.say('bar')
+// throws Error('Not allowed to call this function with arguments
+//    foo bar 42
+// ')
+```
 
 ### Small print
 
