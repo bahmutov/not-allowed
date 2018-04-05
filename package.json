@@ -89,8 +89,8 @@
     "pre-git": "3.17.1",
     "prettier-standard": "8.0.0",
     "standard": "11.0.1",
-    "semantic-release": "^15.1.5",
-    "travis-deploy-once": "^4.4.1"
+    "semantic-release": "15.1.5",
+    "travis-deploy-once": "4.4.1"
   },
   "dependencies": {
     "arguments-as-string": "1.0.1"
