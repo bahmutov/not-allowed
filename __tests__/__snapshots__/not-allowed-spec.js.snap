@@ -2,7 +2,7 @@
 
 exports[`not-allowed throws error 1`] = `
 "Not allowed to call this function with arguments
-    
+    []
   "
 `;
 
