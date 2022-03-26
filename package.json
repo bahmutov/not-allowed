@@ -79,7 +79,7 @@
     "travis-deploy-once": "travis-deploy-once"
   },
   "devDependencies": {
-    "ban-sensitive-files": "1.9.2",
+    "ban-sensitive-files": "1.9.18",
     "dependency-check": "3.3.0",
     "deps-ok": "1.4.1",
     "git-issues": "1.3.1",
